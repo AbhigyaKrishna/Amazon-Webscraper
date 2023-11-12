@@ -50,7 +50,7 @@ class AmazonSession(Session):
 
     def _wrap(self, method):
         def inner(url, **kwargs):
-            r = super().request(method, url, **kwargs)
+            r = getattr(super(AmazonSession, self), method)(url, **kwargs)
             _check_access(r)
             return r
         return inner
