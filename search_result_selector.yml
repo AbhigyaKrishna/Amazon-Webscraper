@@ -36,10 +36,6 @@ product:
             css: 'h2.a-size-mini a.a-link-normal'
             xpath: null
             type: Link
-        deliver_by:
-            css: span.a-color-base.a-text-bold
-            xpath: null
-            type: Text
         badge:
             css: span.a-badge-label
             xpath: null
