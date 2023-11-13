@@ -1,16 +1,10 @@
+import json
+
 from requests import Session, Response
 
 
 class AccessException(Exception):
     pass
-
-
-def _check_access(response: Response):
-    if response.status_code > 500:
-        if "To discuss automated access to Amazon data please contact" in response.text:
-            raise AccessException("Page was blocked by Amazon. Please try using better proxies")
-        else:
-            raise AccessException(f"Page must have been blocked by Amazon as the status code was {response.status_code}")
 
 
 class AmazonSession(Session):
@@ -28,7 +22,7 @@ class AmazonSession(Session):
             'sec-fetch-user': '?1',
             'sec-fetch-dest': 'document',
             'referer': 'https://www.amazon.com/',
-            'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
+            'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8'
         })
 
         methods = ["get", "post", "put", "delete", "head", "options", "patch"]
@@ -40,17 +34,84 @@ class AmazonSession(Session):
 
     def home(self) -> Response:
         r = self.get('https://www.amazon.in/')
-        _check_access(r)
+        self._check_access(r)
         return r
 
     def search(self, inp: str) -> Response:
         r = self.get(f'https://www.amazon.in/s?k={inp}')
-        _check_access(r)
+        self._check_access(r)
         return r
 
     def _wrap(self, method):
         def inner(url, **kwargs):
             r = getattr(super(AmazonSession, self), method)(url, **kwargs)
-            _check_access(r)
+            self._check_access(r)
             return r
+
         return inner
+
+    @staticmethod
+    def _check_access(response: Response):
+        if response.status_code > 500:
+            if "To discuss automated access to Amazon data please contact" in response.text:
+                raise AccessException("Page was blocked by Amazon. Please try using better proxies")
+            else:
+                raise AccessException(
+                    f"Page must have been blocked by Amazon as the status code was {response.status_code}")
+
+
+class AmazonSearchResult:
+    def __init__(self, title: str, image: str, price: float, original_price: float, discount: int, review: float,
+                 review_count: int, link: str, badge: str | None):
+        self._title = title
+        self._image = image
+        self._price = price
+        self._original_price = original_price
+        self._discount = discount
+        self._review = review
+        self._review_count = review_count
+        self._link = link
+        self._badge = badge
+
+    def __str__(self):
+        from serialize import AmazonSearchResultEncoder
+        return json.dumps(self, cls=AmazonSearchResultEncoder)
+
+    def __repr__(self):
+        return str(self)
+
+    @property
+    def title(self) -> str:
+        return self._title
+
+    @property
+    def image(self) -> str:
+        return self._image
+
+    @property
+    def price(self) -> float:
+        return self._price
+
+    @property
+    def original_price(self) -> float:
+        return self._original_price
+
+    @property
+    def discount(self) -> int:
+        return self._discount
+
+    @property
+    def review(self) -> float:
+        return self._review
+
+    @property
+    def review_count(self) -> int:
+        return self._review_count
+
+    @property
+    def link(self) -> str:
+        return self._link
+
+    @property
+    def badge(self) -> str | None:
+        return self._badge

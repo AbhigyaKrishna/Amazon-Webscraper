@@ -1,7 +1,9 @@
 import json
 
-from amazon import AmazonSession
 from selectorlib import Extractor
+
+from amazon import AmazonSession
+from serialize import AmazonSearchResultEncoder
 
 
 def main():
@@ -17,10 +19,10 @@ def main():
     e = Extractor.from_yaml_file("search_result_selector.yml")
 
     data = e.extract(res.text)
-    if data:
-        with open('output.json', 'w') as out:
-            json.dump(data, out, indent=4)
-            out.write("\n")
+    result = [AmazonSearchResultEncoder.from_dict(r) for r in data['product']]
+
+    with open("output.json", "w") as f:
+        json.dump(result, f, cls=AmazonSearchResultEncoder)
     print("Output dumped to output.json")
 
 
