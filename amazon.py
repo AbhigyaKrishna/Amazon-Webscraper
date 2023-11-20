@@ -27,31 +27,29 @@ class AmazonSession(Session):
 
         methods = ["get", "post", "put", "delete", "head", "options", "patch"]
         for method in methods:
-            setattr(self, method, self._wrap(method))
+            setattr(self, method, self.__wrap(method))
 
     def __exit__(self, *args):
         self.close()
 
     def home(self) -> Response:
-        r = self.get('https://www.amazon.in/')
-        self._check_access(r)
-        return r
+        return self.get('https://www.amazon.in/')
 
-    def search(self, inp: str) -> Response:
-        r = self.get(f'https://www.amazon.in/s?k={inp}')
-        self._check_access(r)
-        return r
+    def search(self, inp: str, page: int = 1) -> Response:
+        if page > 1:
+            return self.get(f'https://www.amazon.in/s?k={inp}&page={page}')
+        return self.get(f'https://www.amazon.in/s?k={inp}')
 
-    def _wrap(self, method):
+    def __wrap(self, method):
         def inner(url, **kwargs):
             r = getattr(super(AmazonSession, self), method)(url, **kwargs)
-            self._check_access(r)
+            self.__check_access(r)
             return r
 
         return inner
 
     @staticmethod
-    def _check_access(response: Response):
+    def __check_access(response: Response):
         if response.status_code > 500:
             if "To discuss automated access to Amazon data please contact" in response.text:
                 raise AccessException("Page was blocked by Amazon. Please try using better proxies")
@@ -63,15 +61,18 @@ class AmazonSession(Session):
 class AmazonSearchResult:
     def __init__(self, title: str, image: str, price: float, original_price: float, discount: int, review: float,
                  review_count: int, link: str, badge: str | None):
-        self._title = title
-        self._image = image
-        self._price = price
-        self._original_price = original_price
-        self._discount = discount
-        self._review = review
-        self._review_count = review_count
-        self._link = link
-        self._badge = badge
+        self.__title = title
+        self.__image = image
+        self.__price = price
+        self.__original_price = original_price
+        if discount == 0:
+            self.__discount = int((1 - (price / original_price)) * 100)
+        else:
+            self.__discount = discount
+        self.__review = review
+        self.__review_count = review_count
+        self.__link = link
+        self.__badge = badge
 
     def __str__(self):
         from serialize import AmazonSearchResultEncoder
@@ -82,36 +83,36 @@ class AmazonSearchResult:
 
     @property
     def title(self) -> str:
-        return self._title
+        return self.__title
 
     @property
     def image(self) -> str:
-        return self._image
+        return self.__image
 
     @property
     def price(self) -> float:
-        return self._price
+        return self.__price
 
     @property
     def original_price(self) -> float:
-        return self._original_price
+        return self.__original_price
 
     @property
     def discount(self) -> int:
-        return self._discount
+        return self.__discount
 
     @property
     def review(self) -> float:
-        return self._review
+        return self.__review
 
     @property
     def review_count(self) -> int:
-        return self._review_count
+        return self.__review_count
 
     @property
     def link(self) -> str:
-        return self._link
+        return self.__link
 
     @property
     def badge(self) -> str | None:
-        return self._badge
+        return self.__badge

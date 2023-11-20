@@ -30,11 +30,11 @@ class AmazonSearchResultEncoder(JSONEncoder, JSONDecoder):
             return AmazonSearchResult(
                 d['title'],
                 d['image'],
-                parse_float(d['price'].replace(',', '')) if d['price'] is not None else -1,
-                parse_float(d['original_price'].replace('\u20b9', '').replace(',', '')) if d['original_price'] is not None else -1,
-                parse_int((d['discount'][1:4]).replace('%', '')) if d['discount'] is not None else 0,
-                parse_float(d['review'].replace(' out of 5 stars', '')) if d['review'] is not None else 0,
-                parse_int(d['review_count'].replace(',', '')) if d['review_count'] is not None else 0,
+                parse_float(d['price'].replace(',', '')) if d['price'] else -1,
+                parse_float(d['original_price'].replace('\u20b9', '').replace(',', '')) if d['original_price'] else -1,
+                parse_int((d['discount'][1:4]).replace('%', '')) if d['discount'] else 0,
+                parse_float(d['review'].replace(' out of 5 stars', '')) if d['review'] else 0,
+                parse_int(d['review_count'].replace(',', '')) if d['review_count'] else 0,
                 'https://www.amazon.in' + d['link'],
                 d['badge']
             )

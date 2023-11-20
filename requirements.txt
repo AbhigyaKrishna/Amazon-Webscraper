@@ -1,2 +1,4 @@
 requests
 selectorlib
+typer[all]
+rich
