@@ -1,146 +1,92 @@
-**AMAZON WEB SCRAPPER**
+# Amazon Webscraper
 
-Group Name: BitFlip
+A Python-based web scraper that uses **Selectorlib** to extract product information from Amazon, including product names, prices, ratings, and more. It provides a command-line interface (CLI) powered by **Typer**, and displays real-time progress using **Rich**.
 
-Student Name: RAMANSHU SAHANI, PRASHANT KUMAR, ABHIGYA KRISHNA
+## Features
 
-Student Enroll. No and Batch: E23CSEU1894, E23CSEU1897, E23CSEU1893 and Batch 64
+- Extract product details (name, price, ratings, reviews)
+- Save results to CSV or JSON
+- Handles pagination to scrape multiple pages of results
+- Easy-to-use CLI interface with Typer
+- Real-time progress and beautiful terminal output using Rich
+- Configurable scraping parameters (number of pages, search query, etc.)
+- Error handling and rate-limiting to avoid detection by Amazon
 
-Course: CSET 101 : Computational Thinking and Programming
+## Installation
 
-Lab Instructor: Shivam Chaudhary
+### Prerequisites
 
-Submission Date: 21-11-2023
+- Python 3.x
+- [Selectorlib](https://pypi.org/project/SelectorLib/)
+- [Requests](https://pypi.org/project/requests/)
+- [Typer](https://typer.tiangolo.com/)
+- [Rich](https://pypi.org/project/rich/)
 
-**Abstract**
+To install the required dependencies, run:
 
-- **Problem Statement:**
+```bash
+pip install -r requirements.txt
+```
 
-The project aimed to address the challenge users face in making informed purchasing decisions on Amazon due to the vast range of products. The lack of a comprehensive comparison tool often leads to confusion and missed opportunities for finding the best deals.
+## Getting Started
 
-- **Methodology:**
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/amazon-webscraper.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd amazon-webscraper
+   ```
+3. Create and activate a virtual environment (optional but recommended):
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+4. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Utilizing Python, we have developed a CLI application which aim’s to scrap data from Amazon for better deals. The platform allowed users to input product names or categories, fetching real-time data to compare prices, features, and customer rating. Our applications aim’s to provide user friendly environment.
+## Usage
 
-- **Key Findings:**
+#### Running the Scraper
 
-1. Improved Decision-making: Users could make well-informed decisions by comparing products within their budget range, considering features, reviews, and prices.
-2. Enhanced User Experience: The user-friendly interface contributes users a seamless, personalized and informative shopping experience, empowering them to make well informed decisions and find the best deals on Amazon.
-3. Diverse Applications: The project demonstrated applicability across various product categories, including electronics, books, home appliances, and travel gear, catering to diverse user needs.
+To run the scraper for a specific search term, use:
+```bash
+python amazon_scraper.py "search_term"
+```
 
-Overall, the project successfully addressed the challenge of product comparison on Amazon, empowering users to make smarter purchasing decisions and saving them time and money while enhancing their shopping experience.
+Example:
+```bash
+python amazon_scraper.py "laptop"
+```
 
-_**1. Introduction**_
+Options:
+```bash
+--limit               INTEGER  [default: 10]                                                                                                                                                               │
+--price               INTEGER  [default: None]                                                                                                                                                             │
+--rating              FLOAT    [default: None]                                                                                                                                                             │
+--review-count        INTEGER  [default: None]                                                                                                                                                             │
+--discount            INTEGER  [default: None]                                                                                                                                                             │
+--help                         Show this message and exit.
+```
 
-**1.1 Background**
+## Dependencies
 
-The project stemmed from the growing complexities faced by online shoppers, especially on e-commerce giants like Amazon. As online shopping continues to surge in popularity, users encounter challenges navigating through the vast array of products, ensuring they get the best deals, and making informed purchasing decisions. This prompted the conception of a solution-driven comparison CLI application.
+The following libraries are used in this project:
 
-Recognizing these challenges and the evolving needs of online shoppers, the project aims to fill the gap by offering a solution that combines the convenience of online shopping with detailed product comparisons, pricing data, review. The goal is to empower users with the necessary tools to make informed decisions while saving time and money. The project aims to create an enhanced online shopping experience providing users with a onestop platform for product comparison and smart purchasing decision on Amazon
+* **Selectorlib**: For scraping and extracting structured data from Amazon pages using CSS selectors.
+* **Requests**: For making HTTP requests to fetch Amazon pages.
+* **Typer**: For building the command-line interface (CLI) of the scraper.
+* **Rich**: For rich text formatting and progress bar visualization in the terminal.
 
-**1.2 Problem Statement**
+## Contributing
 
-The aim of the project is to alleviate the challenges that user faces while shopping on Amazon by creating a CLI application that overcome these challenges by providing user a comprehensive user friendly experience that offers real time price tracking, customers review. So our application assist users in making well informed purchasing decisions while staying within there budget. This also help user to save their precious time.
+Contributions are welcome! Follow these steps to contribute:
 
-**1.3 Objectives and Goals**
-
-**Objectives:**
-
-- Enhanced shopping experience
-- Accurate price tracking
-- Buyers review
-- Empower informed decision making
-
-**Goals:**
-
-- user engagement and satisfaction
-- Cost saving for users
-- Time efficient shopping
-- Diverse product coverage
-- Reliable information
-
-These objectives and goals collectively aim to create a user friendly platform that not only simplifies the shopping experience but also find the best deals on Amazon
-
-**2. Methodology**
-
-**2.1 Tools and Technologies Used**
-
-- **Programming Tools and Technologies:**
-
-<!---->
-
-    - Python
-    - Git
-
-<!---->
-
-- **Libraries:**
-
-<!---->
-
-    - Selecterlib
-    - Requests
-    - Typer
-    - Rich
-
-**2.2 Project Design**
-
-- **Architectural Design:**
-
-  - **Frontend:**
-
-    - Uses “Typer” and “Rich” libraries.
-
-  - **Backend:**
-
-    - Built with “Selecterlib” and “Request” libraries.
-
-- **Data flow and algorithms:**
-
-  1. Search and fetch data
-  2. Price tracking
-  3. Seeking review
-
-- **Overall flow:**
-
-This design aims for a seamless user experience accurate data and efficient engagement on the CLI application for Amazon products.
-
-**2.3 Implementation Details**
-
-- Frontend development
-- Backend development
-- Web scrapping
-- Filtering
-- Price tracking
-- Seeking review
-
-**3. Results and Discussion**
-
-**3.1 Project Outcomes**
-
-The outcome of our project for Amazon product would encompass various aspects, including user experience, enhanced decision making, overcome the challenges and saves our time.
-
-**3.2 Challenges Faced**
-
-While shopping user faces a vast variety of products on Amazon and it is not easy to find a better deal so our CLI application solves that problem.
-
-**3.3 Learnings and Insights**
-
-- Teamwork
-- Problem solving
-- Continuous learning and growth
-- Overall development
-
-**4. Conclusion**
-
-The conclusion of our CLI application would encapsulate the project achievement, impact, future directions and project enhancing the experience for user gathering valuable data which will help user to save there money and time at same platform.
-
-**References**
-
-_<https://rich.readthedocs.io/en/latest/>_
-
-_<https://github.com/tiangolo/typer>_
-
-_<https://selectorlib.com/>_
-
-This template provides a comprehensive structure for your Python project report. Remember to keep the language clear and concise, and ensure that all technical aspects of the project are thoroughly explained.
+1. Fork the repository
+2. Create a new branch (git checkout -b feature-branch)
+3. Commit your changes (git commit -am 'Add feature')
+4. Push to the branch (git push origin feature-branch)
+5. Open a Pull Request
