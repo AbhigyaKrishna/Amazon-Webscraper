@@ -1,6 +1,7 @@
 import signal
 import sys
 import time
+from typing import Union
 
 import typer
 from rich import print
@@ -40,8 +41,8 @@ def handler(sig, frame):
 signal.signal(signal.SIGINT, handler)
 
 
-def main(search: str, limit: int = 10, price: int | None = None, rating: float | None = None,
-         review_count: int | None = None, discount: int | None = None):
+def main(search: str, limit: int = 10, price: Union[int, None] = None, rating: Union[float, None] = None,
+         review_count: Union[int, None] = None, discount: Union[int, None] = None):
     console = Console(log_time=False, log_path=False)
     with console.status("[bold blue]Starting Amazon Scraper[/bold blue]", spinner="aesthetic") as status:
         console.log("[yellow]Starting Amazon Scraper[/yellow]")
